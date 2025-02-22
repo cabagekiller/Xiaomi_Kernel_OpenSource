@@ -196,9 +196,16 @@ jobs:
         CONFIG_KSU_SUSFS_OPEN_REDIRECT=y
         EOF
 
-    - name: Execute patches.sh - USING WORKING-DIRECTORY - REMOVED
-      run: echo "patches.sh execution removed"
-
+    - name: Execute patches.sh
+      working-directory: ${{ steps.kernel.outputs.kernel-folder }}
+      run: |
+          PATCHES_SH_PATH="../patches_repo/patches.sh"
+          if [ -f "$PATCHES_SH_PATH" ]; then
+            chmod +x "$PATCHES_SH_PATH"
+            "$PATCHES_SH_PATH"
+          else
+            echo "patches.sh not found at $PATCHES_SH_PATH"
+          fi
     - name: Building kernel
       id: build
       run: |
