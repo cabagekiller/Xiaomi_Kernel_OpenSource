@@ -13,6 +13,7 @@
 #include <linux/seq_file.h>
 #include <linux/proc_fs.h>
 #include <linux/exportfs.h>
+#include <linux/inotify.h>
 
 #include "inotify/inotify.h"
 #include "fsnotify.h"
