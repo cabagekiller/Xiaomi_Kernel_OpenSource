@@ -15,8 +15,16 @@
 #include <linux/exportfs.h>
 #include <linux/inotify.h>
 
+
 #include "inotify/inotify.h"
 #include "fsnotify.h"
+
+#ifdef CONFIG_INOTIFY_USER
+static inline __u32 inotify_mark_user_mask(struct fsnotify_mark *mark)
+{
+    return mark->mask & IN_ALL_EVENTS;
+}
+#endif
 
 #if defined(CONFIG_PROC_FS)
 
