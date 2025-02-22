@@ -213,7 +213,7 @@ jobs:
         export KBUILD_BUILD_HOST="Github"
         export PATH="$TOOLS_FOLDER/clang/bin:$PATH"
         mkdir -p artifacts
-        make O=out ARCH=arm64 vendor/fire_defconfig V=1
+        make O=out ARCH=arm64 fire_defconfig V=1
         make O=out CC=clang LLVM=1 LLVM_IAS=1 -j$(nproc --all) CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1
         BUILD_END_TIME=$(date +%s)
         BUILD_ELAPSED_TIME=$((BUILD_END_TIME - BUILD_START_TIME))
