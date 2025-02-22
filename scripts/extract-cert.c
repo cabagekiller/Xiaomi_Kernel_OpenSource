@@ -18,6 +18,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <err.h>
+#include <getopt.h>
 #include <openssl/bio.h>
 #include <openssl/pem.h>
 #include <openssl/err.h>
@@ -42,12 +43,14 @@ static void display_openssl_errors(int l)
 	const char *file;
 	char buf[120];
 	int e, line;
+	const char *func, *data;
+	int flags;
 
 	if (ERR_peek_error() == 0)
 		return;
 	fprintf(stderr, "At main.c:%d:\n", l);
 
-	while ((e = ERR_get_error_all(&file, &line))) {
+	while ((e = ERR_get_error_all(&file, &line, &func, &data, &flags))) {
 		ERR_error_string(e, buf);
 		fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
 	}
@@ -57,10 +60,12 @@ static void drain_openssl_errors(void)
 {
 	const char *file;
 	int line;
+	const char *func, *data;
+	int flags;
 
 	if (ERR_peek_error() == 0)
 		return;
-	while (ERR_get_error_all(&file, &line)) {}
+	while (ERR_get_error_all(&file, &line, &func, &data, &flags)) {}
 }
 
 #define ERR(cond, fmt, ...)				\
