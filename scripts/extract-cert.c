@@ -56,7 +56,7 @@ static void drain_openssl_errors(void)
 
 	if (ERR_peek_error() == 0)
 		return;
-	while (ERR_get_error_line(&file, &line)) {}
+	while (ERR_get_error_all(&file, &line)) {}
 }
 
 #define ERR(cond, fmt, ...)				\
