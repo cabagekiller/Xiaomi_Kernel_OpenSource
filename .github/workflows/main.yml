@@ -125,24 +125,26 @@ jobs:
         # Setup KernelSU-Next
         echo "--- Setting up KernelSU-Next ---"
         rm -rf KernelSU-Next
-        curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -s next
+        curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -s next-susfs-dev
         echo "--- KernelSU-Next setup complete ---"
 
         # Move SUSFS KSU patch
-        SOURCE_PATH="$WORKSPACE_FOLDER/kernel_patches/KernelSU-Next-Implement-SUSFS-v1.5.5-Universal.patch"
-        DESTINATION_PATH="./KernelSU-Next/"
-        mkdir -p "$DESTINATION_PATH"
-        mv "$SOURCE_PATH" "$DESTINATION_PATH"
+        #SOURCE_PATH="$WORKSPACE_FOLDER/kernel_patches/KernelSU-Next-Implement-SUSFS-v1.5.5-Universal.patch"
+        #DESTINATION_PATH="./KernelSU-Next/"
+        #mkdir -p "$DESTINATION_PATH"
+        #mv "$SOURCE_PATH" "$DESTINATION_PATH"
         # Apply KernelSU patch
-        cd KernelSU-Next
-        patch -p1 -F 3 -N < KernelSU-Next-Implement-SUSFS-v1.5.5-Universal.patch || true
-        cd ..
+        #cd KernelSU-Next
+        #patch -p1 -F 3 -N < KernelSU-Next-Implement-SUSFS-v1.5.5-Universal.patch || true
+        #cd ..
 
         # Copy and Apply SUSFS Patch
         cp "$WORKSPACE_FOLDER/susfs4ksu/kernel_patches/50_add_susfs_in_kernel-4.19.patch" ./50_add_susfs.patch
         patch -p1 -F 3 -N < 50_add_susfs.patch || true
-
         cd ./common
+        cp "$WORKSPACE_FOLDER/susfs4ksu/kernel_patches/next/next_hooks.patch"
+        patch -p1 --forward < next_hooks.patch
+        
         git add -A && git commit -a -m "BUILD Kernel" || true
         cd ..
         git add -A && git commit -a -m "BUILD Kernel" || true
@@ -199,13 +201,13 @@ jobs:
     - name: Execute patches.sh
       working-directory: ${{ steps.kernel.outputs.kernel-folder }}
       run: |
-          PATCHES_SH_PATH="../patches_repo/patches.sh"
-          if [ -f "$PATCHES_SH_PATH" ]; then
-            chmod +x "$PATCHES_SH_PATH"
-            "$PATCHES_SH_PATH"
-          else
-            echo "patches.sh not found at $PATCHES_SH_PATH"
-          fi
+          #PATCHES_SH_PATH="../patches_repo/patches.sh"
+          #if [ -f "$PATCHES_SH_PATH" ]; then
+            #chmod +x "$PATCHES_SH_PATH"
+            #"$PATCHES_SH_PATH"
+          #else
+            #echo "patches.sh not found at $PATCHES_SH_PATH"
+          #fi
     - name: Building kernel
       id: build
       run: |
