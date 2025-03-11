@@ -1691,6 +1691,7 @@ static irqreturn_t nvt_ts_work_func(int irq, void *data)
 	int8_t pen_tilt_y = 0;
 	uint32_t pen_btn1 = 0;
 	uint32_t pen_btn2 = 0;
+	//uint32_t pen_battery = 0;
 
 #if WAKEUP_GESTURE
 	if (bTouchIsAwake == 0) {
@@ -1901,7 +1902,7 @@ static irqreturn_t nvt_ts_work_func(int irq, void *data)
 				pen_distance = (uint32_t)(point_data[75] << 8) + (uint32_t)(point_data[76]);
 				pen_btn1 = (uint32_t)(point_data[77] & 0x01);
 				pen_btn2 = (uint32_t)((point_data[77] >> 1) & 0x01);
-				pen_battery = (uint32_t)point_data[78];
+				//pen_battery = (uint32_t)point_data[78];
 //				printk("x=%d,y=%d,p=%d,tx=%d,ty=%d,d=%d,b1=%d,b2=%d,bat=%d\n", pen_x, pen_y, pen_pressure,
 //						pen_tilt_x, pen_tilt_y, pen_distance, pen_btn1, pen_btn2, pen_battery);
 
