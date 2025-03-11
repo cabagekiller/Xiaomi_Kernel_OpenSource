@@ -168,10 +168,10 @@ static int aw_check_data_size_v_0_0_0_1(struct device *dev,
 	int i = 0;
 	size_t data_size = 0;
 	struct aw_acf_hdr *acf_hdr = NULL;
-	//struct aw_acf_dde *acf_dde = NULL;
+	struct aw_acf_dde *acf_dde = NULL;
 
 	acf_hdr = (struct aw_acf_hdr *)fw_data;
-	//acf_dde = (struct aw_acf_dde *)(fw_data + acf_hdr->ddt_offset);
+	acf_dde = (struct aw_acf_dde *)(fw_data + acf_hdr->ddt_offset);
 
 	for (i = 0; i < acf_hdr->dde_num; ++i) {
 		if (acf_dde[i].data_size % 2) {
