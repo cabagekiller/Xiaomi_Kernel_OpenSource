@@ -234,6 +234,10 @@ static inline int32_t spi_read_write(struct spi_device *client, uint8_t *buf, si
 
 	spi->controller_data = (void*)&fts_mt_chip_conf;
 	ret = spi_setup(spi);
+	if (ret < 0) {
+		dev_err(&spi->dev, "spi_setup failed: %d\n", ret);
+		return ret; // Or an appropriate error code.  Crucially, return!
+	}
 
 	memset(ts->xbuf, 0, len + DUMMY_BYTES);
 	memcpy(ts->xbuf, buf, len);
@@ -1687,7 +1691,6 @@ static irqreturn_t nvt_ts_work_func(int irq, void *data)
 	int8_t pen_tilt_y = 0;
 	uint32_t pen_btn1 = 0;
 	uint32_t pen_btn2 = 0;
-	uint32_t pen_battery = 0;
 
 #if WAKEUP_GESTURE
 	if (bTouchIsAwake == 0) {
@@ -2185,10 +2188,13 @@ static int nvt_detect_charger_notifier_callback(struct notifier_block *self,
 	NVT_LOG("nvt_detect_charger_notifier_callback start\n");
 	nvt_charger_flag = event;
 	ret = queue_work(nvt_charger_detect_workqueue, &nvt_charger_detect_work);
+	if (ret < 0) {
+		NVT_ERR("Failed to queue charger detect work: %d\n", ret);
+		// Consider returning an error code here if appropriate
+	}
 	NVT_LOG("nvt_detect_charger_notifier_callback end\n");
 	return 0;
 }
-
 
 static int32_t nvt_ts_probe(struct spi_device *client)
 {
