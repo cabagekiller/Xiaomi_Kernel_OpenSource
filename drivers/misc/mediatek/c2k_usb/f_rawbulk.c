@@ -42,6 +42,9 @@ int rawbulk_function_setup(struct usb_function *f, const struct
 	struct rawbulk_function *fn = function_to_rbf(f);
 	unsigned int setdtr = 0;
 	unsigned int data_connect = 0;
+	unsigned int activated : 1;
+        unsigned int initialized : 1;
+
 	struct usb_composite_dev *cdev = f->config->cdev;
 	struct usb_request *req = cdev->req;
 	int value = -EOPNOTSUPP;
