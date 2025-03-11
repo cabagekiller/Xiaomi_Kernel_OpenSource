@@ -985,13 +985,12 @@ void mtk_vcodec_dec_empty_queues(struct file *file, struct mtk_vcodec_ctx *ctx)
 		vb2_v4l2 = container_of(dst_buf,
 			struct vb2_v4l2_buffer, vb2_buf);
 
-		v4l2_m2m_buf_done(to_vb2_v4l2_buffer(dst_buf),
+		v4l2_m2m_buf_done(vb2_v4l2,  // Pass vb2_v4l2
 			VB2_BUF_STATE_ERROR);
 	}
 
 	ctx->state = MTK_STATE_FREE;
 }
-
 void mtk_vcodec_dec_release(struct mtk_vcodec_ctx *ctx)
 {
 	vdec_if_deinit(ctx);
