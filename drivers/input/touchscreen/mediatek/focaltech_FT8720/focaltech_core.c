@@ -132,7 +132,7 @@ static int fts_detect_charger_notifier_callback(struct notifier_block *self,
 	fts_charger_flag = event;
 	ret = queue_work(fts_charger_detect_workqueue, &fts_charger_detect_work);
 	if (ret < 0) {
-		FTS_ERR("Failed to queue charger detect work: %d\n", ret);
+		FTS_ERROR("Failed to queue charger detect work: %d\n", ret);
 		// Consider returning an error code here if the caller needs to know
 		// about the failure to queue the work.  However, notifier callbacks
 		// often need to return NOTIFY_DONE (0), so this might not be possible.
