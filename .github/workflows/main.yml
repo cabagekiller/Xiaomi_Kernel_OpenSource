@@ -141,10 +141,10 @@ jobs:
         # Copy and Apply SUSFS Patch
         cp "$WORKSPACE_FOLDER/susfs4ksu/kernel_patches/50_add_susfs_in_kernel-4.19.patch" ./50_add_susfs.patch
         patch -p1 -F 3 -N < 50_add_susfs.patch || true
-        cd ./common
         cp "$WORKSPACE_FOLDER/kernel_patches/next/next_hooks.patch" ./
-        patch -p1 --forward < next_hooks.patch
+        patch -p1 --forward < next_hooks.patch || true
         
+        cd ./common
         git add -A && git commit -a -m "BUILD Kernel" || true
         cd ..
         git add -A && git commit -a -m "BUILD Kernel" || true
